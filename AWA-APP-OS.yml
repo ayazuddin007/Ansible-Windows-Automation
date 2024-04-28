@@ -18,11 +18,12 @@
     
     - name: Get system name
       win_shell: $env:computername
-      register: mysystem
+      register: out
       
-    - name: Print system name
-      debug: 
-       msg: "{{ mysystem.stdout }}"
+    - debug: msg= "{{ out.stdout }}" 
+    
+
+    - debug: msg="{{ out.stderr }}"  
 
     # - name: Allow log on through Remote Desktop Services
     #   win_user_right:
