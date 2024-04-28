@@ -6,19 +6,6 @@
   tasks:
 
     
-
-    
-
-    # # - name: Create Windows User 
-    # #   win_user:
-    # #     name: "{{ item }}"
-    # #     password: "{{ AWA_Password }}"
-    # #     state: present
-    # #     groups:
-    # #         - Users
-    # #         - Remote Desktop Users
-    # #   loop: "{{ AWA_Users }}"
-    
     - name: Install .NET Framework 3.5
       win_shell: Install-WindowsFeature NET-Framework-Core
       tags:
@@ -41,26 +28,30 @@
     #     include_sub_features: yes
     #     include_management_tools: yes
 
-    - name: Install Active Directory Module
+    - name: Install Windows Specific Feature
       win_feature:
-        name: RSAT-AD-PowerShell
+        name: "{{ item }}"
         state: present
-        include_sub_features: yes
-        include_management_tools: yes
+      loop: "{{ Windows_Features }}"
 
-    # - name: Install Specific Windows Feature
-    #   win_feature:
-    #     name: "{{ item }}"
-    #     state: present
-    #   loop: "{{ Windows_Features }}"
 
-    - name: Disable Windows Password Complexity
-      win_shell: |
-        Import-Module ActiveDirectory 
-        Get-ADDefaultDomainPasswordPolicy 
-        Set-ADDefaultDomainPasswordPolicy -ComplexityEnabled $false
-        Get-ADDefaultDomainPasswordPolicy 
-        gpupdate /force
+    - name: Create Windows User 
+      win_user:
+        name: "{{ item }}"
+        password: "{{ AWA_Password }}"
+        state: present
+        groups:
+            - Users
+            - Remote Desktop Users
+      loop: "{{ AWA_Users }}"
+
+    # - name: Disable Windows Password Complexity
+    #   win_shell: |
+    #     Import-Module ActiveDirectory 
+    #     Get-ADDefaultDomainPasswordPolicy 
+    #     Set-ADDefaultDomainPasswordPolicy -ComplexityEnabled $false
+    #     Get-ADDefaultDomainPasswordPolicy 
+    #     gpupdate /force
 
     # - name: Reboot Windows Server
     #   win_reboot:
