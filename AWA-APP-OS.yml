@@ -8,7 +8,9 @@
     - name: Disable Windows Password Complexity
       win_shell: |
         Import-Module ActiveDirectory 
-        Set-ADDefaultDomainPasswordPolicy -ComplexityEnabled $false -ReversibleEncryptionEnabled $false
+        Get-ADDefaultDomainPasswordPolicy 
+        Set-ADDefaultDomainPasswordPolicy -ComplexityEnabled $false
+        Get-ADDefaultDomainPasswordPolicy 
         gpupdate /force
 
     # # - name: Create Windows User 
@@ -36,12 +38,12 @@
     # #   tags:
     # #     - "4x"
 
-    # - name: Install IIS Web-Server with sub features and management tools
-    #   win_feature:
-    #     name: Web-Server
-    #     state: present
-    #     include_sub_features: yes
-    #     include_management_tools: yes
+    - name: Install IIS Web-Server with sub features and management tools
+      win_feature:
+        name: Web-Server
+        state: present
+        include_sub_features: yes
+        include_management_tools: yes
 
     # # - name: Install IIS Web-Server with Specific Features
     # #   win_feature:
