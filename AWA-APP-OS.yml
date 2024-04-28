@@ -5,22 +5,23 @@
     - "vars/common.vars"
   tasks:
 
-    - name: Create Windows User 
-      win_user:
-        name: "{{ item }}"
-        password: "{{ AWA_Password }}"
-        state: present
-        groups:
-            - Users
-      loop: "{{ AWA_Users }}"
-      tags:
-        - all
+    # - name: Create Windows User 
+    #   win_user:
+    #     name: "{{ item }}"
+    #     password: "{{ AWA_Password }}"
+    #     state: present
+    #     groups:
+    #         - Users
+    #   loop: "{{ AWA_Users }}"
+    #   tags:
+    #     - all
     
-    - name: Print system name
-      win_command: hostname
+    - name: Get system name
+      win_shell: $env:computername
       register: mysystem
       
-    - debug: 
+    - name: Print system name
+      debug: 
        msg: "{{ mysystem }}"
 
     # - name: Allow log on through Remote Desktop Services
