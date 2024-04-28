@@ -17,9 +17,7 @@
         - all
 
     - name: Show hostname
-      win_powershell:
-        script: |
-          Write-Output "Hello World!"
+      win_shell: echo "Hello World"
       
 
     # - name: Allow log on through Remote Desktop Services
