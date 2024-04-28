@@ -5,13 +5,13 @@
     - "vars/common.vars"
   tasks:
 
-    - name: Disable Windows Password Complexity
-      win_shell: |
-        Import-Module ActiveDirectory 
-        Get-ADDefaultDomainPasswordPolicy 
-        Set-ADDefaultDomainPasswordPolicy -ComplexityEnabled $false
-        Get-ADDefaultDomainPasswordPolicy 
-        gpupdate /force
+    # - name: Disable Windows Password Complexity
+    #   win_shell: |
+    #     Import-Module ActiveDirectory 
+    #     Get-ADDefaultDomainPasswordPolicy 
+    #     Set-ADDefaultDomainPasswordPolicy -ComplexityEnabled $false
+    #     Get-ADDefaultDomainPasswordPolicy 
+    #     gpupdate /force
 
     # # - name: Create Windows User 
     # #   win_user:
