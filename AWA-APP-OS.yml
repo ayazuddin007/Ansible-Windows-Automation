@@ -18,11 +18,11 @@
     
     - name: Get system name
       win_shell: hostname
-      register: result.stdout_lines
+      register: result
 
     - name: Show result content only
       debug:
-        msg: "{{ result }}"
+        msg: "{{ result.stdout_lines }}"
 
     # - name: Allow log on through Remote Desktop Services
     #   win_user_right:
