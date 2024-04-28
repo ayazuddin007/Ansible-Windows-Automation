@@ -5,14 +5,14 @@
     - "vars/common.vars"
   tasks:
 
-    - name: Create Windows User 
-      win_user:
-        name: "{{ item }}"
-        password: "{{ AWA_Password }}"
-        state: present
-        groups:
-            - Users
-      loop: "{{ AWA_Users }}"
+    # - name: Create Windows User 
+    #   win_user:
+    #     name: "{{ item }}"
+    #     password: "{{ AWA_Password }}"
+    #     state: present
+    #     groups:
+    #         - Users
+    #   loop: "{{ AWA_Users }}"
     
     - name: Get Windows Hostname
       win_shell: hostname
@@ -20,31 +20,31 @@
 
     - name: Print Windows Hostname
       debug: 
-        msg: '{{result.stdout_lines[0]}}\{{ item }}'
+        msg: '{{result.stdout_lines[0]}}\{{ item }} | replace("\\","\")'
       loop: "{{ AWA_Users }}"
 
-    - name: Add User to Windows RDP group
-      win_group_membership:
-        name: Remote Desktop Users
-        members:
-          - '{{result.stdout_lines[0]}}\{{ item }}'
-        state: present
-      loop: "{{ AWA_Users }}"
+    # - name: Add User to Windows RDP group
+    #   win_group_membership:
+    #     name: Remote Desktop Users
+    #     members:
+    #       - '{{result.stdout_lines[0]}}\{{ item }}'
+    #     state: present
+    #   loop: "{{ AWA_Users }}"
        
-    - name: Install .NET Framework 3.5
-      win_shell: Install-WindowsFeature NET-Framework-Core
-      tags:
-        - "3x"
+    # - name: Install .NET Framework 3.5
+    #   win_shell: Install-WindowsFeature NET-Framework-Core
+    #   tags:
+    #     - "3x"
 
     # .Net Framework 4.8 for Windows Server 2022
     # .Net Framework 4.7 for Windows Server 2019
     # .Net Framework 4.5 for Windows Server 2016 
-    - name: Install .NET Framework 4.8/4.7/4.5
-      win_chocolatey:
-        name: "{{ Net_Framework }}"
-        state: present
-      tags:
-        - "4x"
+    # - name: Install .NET Framework 4.8/4.7/4.5
+    #   win_chocolatey:
+    #     name: "{{ Net_Framework }}"
+    #     state: present
+    #   tags:
+    #     - "4x"
 
     # - name: Install IIS Web-Server with sub features and management tools
     #   win_feature:
@@ -53,11 +53,11 @@
     #     include_sub_features: yes
     #     include_management_tools: yes
 
-    - name: Install IIS Web-Server with Specific Features
-      win_feature:
-        name: "{{ item }}"
-        state: present
-      loop: "{{ IIS_Features }}"
+    # - name: Install IIS Web-Server with Specific Features
+    #   win_feature:
+    #     name: "{{ item }}"
+    #     state: present
+    #   loop: "{{ IIS_Features }}"
 
     # - name: Reboot Windows Server
     #   win_reboot:
