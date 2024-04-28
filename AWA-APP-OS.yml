@@ -18,7 +18,7 @@
     
     - name: Print the gateway for each host when defined
       debug:
-        msg: System {{ inventory_hostname }} has gateway {{ ansible_default_ipv4.gateway }}
+        msg: System {{ inventory_hostname }}
       
 
     # - name: Allow log on through Remote Desktop Services
