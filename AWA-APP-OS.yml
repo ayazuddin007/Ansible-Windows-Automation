@@ -5,14 +5,14 @@
     - "vars/common.vars"
   tasks:
 
-    # - name: Create Windows User 
-    #   win_user:
-    #     name: "{{ item }}"
-    #     password: "{{ AWA_Password }}"
-    #     state: present
-    #     groups:
-    #         - Users
-    #   loop: "{{ AWA_Users }}"
+    - name: Create Windows User 
+      win_user:
+        name: "{{ item }}"
+        password: "{{ AWA_Password }}"
+        state: present
+        groups:
+            - Users
+      loop: "{{ AWA_Users }}"
     
     - name: Get Windows Hostname
       win_shell: hostname
@@ -20,7 +20,14 @@
 
     - name: Print Windows Hostname
       debug: 
-        msg: '{{result.stdout_lines[0]}}\{{ item }} | replace("\\","\")'
+        msg: '{{result.stdout_lines[0]}}' 
+
+    - name: Add User to Windows RDP group
+      win_group_membership:
+        name: Remote Desktop Users
+        members:
+          - '{{ item }}'
+        state: present
       loop: "{{ AWA_Users }}"
 
     # - name: Add User to Windows RDP group
