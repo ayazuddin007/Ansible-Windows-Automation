@@ -18,7 +18,12 @@
       win_shell: hostname
       register: result
 
-    - name: Add User to Windows Remote Desktop Users group
+    - name: Print Windows Hostname
+      debug: 
+        msg: '{{result.stdout_lines[0]}}\{{ item }}'
+      loop: "{{ AWA_Users }}"
+
+    - name: Add User to Windows RDP group
       win_group_membership:
         name: Remote Desktop Users
         members:
