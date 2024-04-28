@@ -277,4 +277,5 @@ Password Complexity
 ===================
 https://forums.ivanti.com/s/article/How-to-disable-the-complex-password-requirement-in-Windows-Server-Operating-Systems?language=en_US
 https://specopssoft.com/blog/managing-active-directory-password-policy-with-powershell/
+https://www.wintips.org/how-to-disable-password-complexity-requirements-on-server-2016/
 
