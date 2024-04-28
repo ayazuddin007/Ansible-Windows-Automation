@@ -27,10 +27,10 @@ Windows Server 2022
 -------------------
 2022
 -----
-IP: 172.31.39.98 
-DNS: ip-172-31-39-98.ap-south-1.compute.internal	    
+IP: 172.31.42.52 
+DNS: ip-172-31-42-52.ap-south-1.compute.internal	    
 Username: Administrator
-Password: 4S*a&Uv(7gw)mg%9(DuZd-bw3k%6X%zE
+Password: LB8@0UNIyjqMiXkU%)91x7tE$59gPC&c
 
 2019
 -----
@@ -63,16 +63,16 @@ winver
 winrm enumerate winrm/config/Listener
 
 New-SelfSignedCertificate -DnsName "DNS Name" -CertStoreLocation Cert:\LocalMachine\My
-New-SelfSignedCertificate -DnsName "ip-172-31-39-98.ap-south-1.compute.internal" -CertStoreLocation Cert:\LocalMachine\My
+New-SelfSignedCertificate -DnsName "ip-172-31-42-52.ap-south-1.compute.internal" -CertStoreLocation Cert:\LocalMachine\My
 
-72ABA2B338001DC87927C8AC7374B71E9186844C
+D8A57D60E9DFC963B20ADF3D61B392BE0AFFA92B
 
 open port 5985 5986 in SG as WINRM-HTTP and WINRM_HTTPS for 0.0.0.0/0 cidr
 
 
 
 winrm create winrm/config/Listener?Address=*+Transport=HTTPS '@{Hostname="DNS Name"; CertificateThumbprint="ThumbPrint"}'
-winrm create winrm/config/Listener?Address=*+Transport=HTTPS '@{Hostname="ip-172-31-39-98.ap-south-1.compute.internal"; CertificateThumbprint="72ABA2B338001DC87927C8AC7374B71E9186844C"}'
+winrm create winrm/config/Listener?Address=*+Transport=HTTPS '@{Hostname="ip-172-31-42-52.ap-south-1.compute.internal"; CertificateThumbprint="D8A57D60E9DFC963B20ADF3D61B392BE0AFFA92B"}'
 
 netsh advfirewall firewall add rule name="Windows Remote Management (HTTPS-In)" dir=in action=allow protocol=TCP localport=5986
 
