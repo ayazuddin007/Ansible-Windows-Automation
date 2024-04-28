@@ -25,17 +25,17 @@
       tags:
         - all
 
-    - name: Install .NET Framework 3.5
-      win_shell: Install-WindowsFeature NET-Framework-Core
-      tags:
-        - "3x"
-        - all
-
     - name: Install Chocolatey 
       win_chocolatey:
           name: chocolatey
           state: latest
       tags:
+        - all
+
+    - name: Install .NET Framework 3.5
+      win_shell: Install-WindowsFeature NET-Framework-Core
+      tags:
+        - "3x"
         - all
 
     # .Net Framework 4.8 for Windows Server 2022
