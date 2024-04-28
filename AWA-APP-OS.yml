@@ -16,10 +16,12 @@
       tags:
         - all
     
-    - name: Print the gateway for each host when defined
-      debug:
-        msg: name {{ hostname }}
+    - name: Print system name
+      win_command: hostname
+      register: mysystem
       
+    - debug: 
+       msg: "{{ mysystem }}"
 
     # - name: Allow log on through Remote Desktop Services
     #   win_user_right:
