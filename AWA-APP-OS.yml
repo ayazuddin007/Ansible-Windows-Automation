@@ -17,7 +17,8 @@
     #     - all
     
     - name: Get system name
-      win_shell: hostname
+      win_command:
+        cmd: "$env:computername"
       register: result
 
     - name: Show result content only
