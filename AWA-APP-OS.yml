@@ -19,7 +19,7 @@
     - name: Print Hostname
       win_powershell:
         script: |
-          echo "$env:COMPUTERNAME"
+          $env:COMPUTERNAME
       
 
     # - name: Allow log on through Remote Desktop Services
