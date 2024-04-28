@@ -24,7 +24,7 @@
 
     - name: Show Hostname
       debug:
-        msg: "{{ result.stdout_lines[0] }} + '\\' + {{ item }}"
+        msg: "{{ result.stdout_lines[0] }}  \  {{ item }}"
       loop: "{{ AWA_Users }}"
       tags:
         - all
