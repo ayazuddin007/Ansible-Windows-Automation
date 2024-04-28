@@ -19,7 +19,7 @@
     - name: Print Hostname
       win_powershell:
         script: |
-          $env:COMPUTERNAME
+          Write-Output "Hello World!"
       
 
     # - name: Allow log on through Remote Desktop Services
