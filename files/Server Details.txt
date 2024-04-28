@@ -279,3 +279,6 @@ https://forums.ivanti.com/s/article/How-to-disable-the-complex-password-requirem
 https://specopssoft.com/blog/managing-active-directory-password-policy-with-powershell/
 https://www.wintips.org/how-to-disable-password-complexity-requirements-on-server-2016/
 
+
+C:\Program Files\WindowsPowerShell\Modules
+
