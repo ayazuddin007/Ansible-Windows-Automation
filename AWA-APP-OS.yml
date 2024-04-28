@@ -35,7 +35,7 @@
         members:
           - '{{result.stdout_lines[0]}}\{{ item }}'
         state: present
-        loop: "{{ AWA_Users }}"
+      loop: "{{ AWA_Users }}"
       tags:
         - all
        
