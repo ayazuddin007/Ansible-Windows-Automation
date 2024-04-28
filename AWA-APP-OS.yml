@@ -18,7 +18,7 @@
 
     - name: Allow log on through Remote Desktop Services
       win_user_right:
-        name: SeRemoteInteractiveLogonRight
+        name: SeDenyRemoteInteractiveLogonRight
         users: "{{ item }}"
         action: set
       loop: "{{ AWA_User }}"
