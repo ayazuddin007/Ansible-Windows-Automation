@@ -253,3 +253,15 @@ Commands
 
 https://docs.ansible.com/ansible/latest/collections/ansible/windows/win_user_right_module.html
 https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/user-rights-assignment
+
+
+group: Remote Desktop Users
+
+RDP Client
+===========
+Computer: <Public IP>
+Username: <System Name>\<Local UserName>
+e.g. 
+    EC2AMAZ-D7BN68F\test
+    EC2AMAZ-D7BN68F\Smith001
+Password: <Password>

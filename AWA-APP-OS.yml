@@ -5,24 +5,34 @@
     - "vars/common.vars"
   tasks:
 
-    # - name: Create Windows User 
-    #   win_user:
-    #     name: "{{ item }}"
-    #     password: "{{ AWA_Password }}"
-    #     state: present
-    #     groups:
-    #         - Users
-    #   loop: "{{ AWA_Users }}"
-    #   tags:
-    #     - all
+    - name: Create User 
+      win_user:
+        name: "{{ item }}"
+        password: "{{ AWA_Password }}"
+        state: present
+        groups:
+            - Users
+      loop: "{{ AWA_Users }}"
+      tags:
+        - all
     
-    - name: Get host name
-      win_shell: hostname
-      register: result
+    # - name: Get host name
+    #   win_shell: hostname
+    #   register: result
 
-    - name: Show result content only
-      debug:
-        msg: "{{ result.stdout_lines[0] }}"
+    # - name: Show result content only
+    #   debug:
+    #     msg: "{{ result.stdout_lines[0] }}"
+
+    - name: Add User to Remote Desktop Users group
+      win_group_membership:
+        name: Remote Desktop Users
+        members:
+          - '{{ansible_hostname}}\{{ item }}'
+        state: present
+        loop: "{{ AWA_Users }}"
+      tags:
+        - all
        
 
 
