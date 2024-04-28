@@ -1,0 +1,274 @@
+Ansible Windows Automation 
+===========================
+
+Security Group
+===============
+Ansible-SG
+-----------
+SSH                22      Custom    0.0.0.0/24
+HTTP               80      Custom    0.0.0.0/24
+
+Windows-SG
+-----------
+RDP                3389    Custom    0.0.0.0/24
+Winrm-HTTP         5985    Custom    0.0.0.0/24
+Winrm-HTTPS        5986    Custom    0.0.0.0/24
+
+
+Credentials
+============
+Ansible Server 
+---------
+IP: 13.127.74.175
+Username: ec2-user
+Password: admin-kp.pem
+
+Windows Server 2022
+-------------------
+2022
+-----
+IP: 172.31.42.52 
+DNS: ip-172-31-42-52.ap-south-1.compute.internal	    
+Username: Administrator
+Password: LB8@0UNIyjqMiXkU%)91x7tE$59gPC&c
+
+2019
+-----
+IP: 172.31.45.152 
+DNS: ip-172-31-45-152.ap-south-1.compute.internal  	    
+Username: Administrator
+Password: FA6GpSGy)y6b;&3@cp*gHm?bjVJGbUfx
+
+2016
+-----
+IP: 172.31.43.173 
+DNS: ip-172-31-43-173.ap-south-1.compute.internal  	    
+Username: Administrator
+Password: Ems7gKV!M?9Y*zFsiY*V$*SoMp=HylCu
+
+
+Configuraions
+==============
+
+URL
+----
+https://www.youtube.com/watch?v=4nj2u8ytqmA
+https://docs.ansible.com/ansible/latest/os_guide/windows_setup.html
+
+Windows Server
+--------------
+In powershell
+
+winver
+winrm enumerate winrm/config/Listener
+
+New-SelfSignedCertificate -DnsName "DNS Name" -CertStoreLocation Cert:\LocalMachine\My
+New-SelfSignedCertificate -DnsName "ip-172-31-42-52.ap-south-1.compute.internal" -CertStoreLocation Cert:\LocalMachine\My
+
+D8A57D60E9DFC963B20ADF3D61B392BE0AFFA92B
+
+open port 5985 5986 in SG as WINRM-HTTP and WINRM_HTTPS for 0.0.0.0/0 cidr
+
+
+
+winrm create winrm/config/Listener?Address=*+Transport=HTTPS '@{Hostname="DNS Name"; CertificateThumbprint="ThumbPrint"}'
+winrm create winrm/config/Listener?Address=*+Transport=HTTPS '@{Hostname="ip-172-31-42-52.ap-south-1.compute.internal"; CertificateThumbprint="D8A57D60E9DFC963B20ADF3D61B392BE0AFFA92B"}'
+
+netsh advfirewall firewall add rule name="Windows Remote Management (HTTPS-In)" dir=in action=allow protocol=TCP localport=5986
+
+winrm get winrm/config
+
+Set-Item -Force WSMan:\localhost\Service\auth\Basic $true
+
+winrm get winrm/config
+
+Ansible Server
+---------------
+
+sudo yum update -y
+sudo dnf install --assumeyes python3-pip
+pip3 --version
+pip3 --help
+sudo pip install pywinrm
+
+https://www.google.com/search?q=install+ansible+on+redhat+9&oq=install+ansible+on+redhat+9&gs_lcrp=EgZjaHJvbWUyDggAEEUYJxg5GIAEGIoFMgcIARAAGIAEMgcIAhAAGIAEMgcIAxAAGIAEMgcIBBAAGIAEMgcIBRAAGIAEMgcIBhAAGIAEMgcIBxAAGIAEMgcICBAAGIAEMgcICRAAGIAE0gEINjgwNWowajeoAgCwAgA&sourceid=chrome&ie=UTF-8
+sudo dnf install ansible-core
+ansible --version
+ansible-galaxy collection install ansible.windows  chocolatey.chocolatey
+ansible-galaxy collection list
+ls /etc/ansible/
+cd /etc/ansible/
+
+sudo touch winhosts.ini
+sudo vi winhosts.ini
+
+winhosts.ini
+---------------------
+[win22]
+172.31.39.98
+
+[win22:vars]
+ansible_user=Administrator
+ansible_password=4S*a&Uv(7gw)mg%9(DuZd-bw3k%6X%zE
+ansible_port=5986
+ansible_connection=winrm
+ansible_winrm_transport=basic
+ansible_winrm_server_cert_validation=ignore
+
+[win19]
+172.31.45.152
+
+[win19:vars]
+ansible_user=Administrator
+ansible_password=FA6GpSGy)y6b;&3@cp*gHm?bjVJGbUfx
+ansible_port=5986
+ansible_connection=winrm
+ansible_winrm_transport=basic
+ansible_winrm_server_cert_validation=ignore
+
+[win16]
+172.31.43.173
+
+[win16:vars]
+ansible_user=Administrator
+ansible_password=Ems7gKV!M?9Y*zFsiY*V$*SoMp=HylCu
+ansible_port=5986
+ansible_connection=winrm
+ansible_winrm_transport=basic
+ansible_winrm_server_cert_validation=ignore
+
+wq!
+
+Check connection
+-----------------
+ansible -i winhosts.ini all -m win_ping
+
+The module win_ping was redirected to ansible.windows.win_ping, which could not be loaded.
+ansible-galaxy collection install ansible.windows
+ansible-galaxy collection list
+
+winrm or requests is not installed: No module named 'winrm'
+sudo pip install pywinrm
+sudo: pip: command not found
+
+sudo dnf install --assumeyes python3-pip
+pip3 --version
+pip3 --help
+
+
+sudo pip install pywinrm
+
+S
+basic: the specified credentials were rejected by the server
+
+In Windows Powershell
+----------------------
+winrm get winrm/config
+Set-Item -Force WSMan:\localhost\Service\auth\Basic $true
+winrm get winrm/config
+
+Ping Windows Server from Linux
+---------------------------------
+[ec2-user@ip-172-31-43-243 ansible]$ ansible -i winhosts.ini all -m win_ping
+3.111.213.100 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+
+Ansible-Playbook
+-----------------
+On Ansible server
+
+cd /etc/ansible/
+
+sudo vi winplay.yml
+
+winplay.yml
+-----------
+---
+  - name: Working with windows server
+    hosts: win
+    tasks:
+      - name: Create Directory
+        win_file:
+          path: C:\Temp\demofolder
+          state: directory
+      - name: Create File
+        win_file:
+          path: C:\Temp\demofolder\demo.txt
+          state: touch
+wq!
+
+ansible-playbook winplay.yml -i winhosts.ini
+
+Note: If playbook ran successfully then Go to C:\Temp in windows server and verify the directory and file is created or not.
+
+
+
+https://docs.ansible.com/ansible/latest/collections/chocolatey/chocolatey/win_chocolatey_module.html
+
+
+sudo vi winaut.yml
+
+winaut.yaml
+-----------
+
+
+
+
+
+sudo echo "" > winaut.yml
+sudo vi winaut.yml
+cat winaut.yml
+ansible-playbook winaut.yml -i winhosts.ini
+ansible-playbook winaut.yml -i winhosts.ini --tags all
+ansible-playbook winaut.yml -i winhosts.ini --tags 3.5
+ansible-playbook winaut.yml -i winhosts.ini --tags 4.8
+ansible-playbook winaut.yml -i winhosts.ini --tags ext3.5,reboot
+
+
+
+Check .net version running using powershell
+---------------------------------------------
+Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -Recurse | Get-ItemProperty -Name version -EA 0 | Where { $_.PSChildName -Match '^(?!S)\p{L}'} | Select PSChildName, version
+
+
+Get-WindowsCapability -Online -Name NetFx3
+
+IIS Fetaures
+-----------
+https://amitgupt.wordpress.com/2018/08/14/installing-iis-and-management-features-using-powershell/
+
+
+Commands
+==========
+# ansible -i env/develop/inventory all -m win_ping
+# ansible-playbook AWA-APP-OS.yml -i env/develop/inventory
+# ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags all
+# ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags 3x
+# ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags 4x
+# ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags 3x,reboot
+# ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags 4x,reboot
+
+
+https://docs.ansible.com/ansible/latest/collections/ansible/windows/win_user_right_module.html
+https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/user-rights-assignment
+
+
+group: Remote Desktop Users
+
+RDP Client
+===========
+Computer: <Public IP>
+Username: <System Name>\<Local UserName>
+e.g. 
+    EC2AMAZ-D7BN68F\test
+    EC2AMAZ-D7BN68F\Smith001
+          or
+          <Local UserName>
+e.g. 
+    test
+    Smith001
+
+Password: <Password>

@@ -1,0 +1,56 @@
+---
+- hosts: win22         # all none
+  gather_facts: false
+  vars_files:
+    - "vars/common.vars"
+  tasks:
+
+    - name: Create Windows User 
+      win_user:
+        name: "{{ item }}"
+        password: "{{ AWA_Password }}"
+        state: present
+        groups:
+            - Users
+            - Remote Desktop Users
+      loop: "{{ AWA_Users }}"
+    
+    
+    - name: Install .NET Framework 3.5
+      win_shell: Install-WindowsFeature NET-Framework-Core
+      tags:
+        - "3x"
+
+    # .Net Framework 4.8 for Windows Server 2022
+    # .Net Framework 4.7 for Windows Server 2019
+    # .Net Framework 4.5 for Windows Server 2016 
+    - name: Install .NET Framework 4.8/4.7/4.5
+      win_chocolatey:
+        name: "{{ Net_Framework }}"
+        state: present
+      tags:
+        - "4x"
+
+    # - name: Install IIS Web-Server with sub features and management tools
+    #   win_feature:
+    #     name: Web-Server
+    #     state: present
+    #     include_sub_features: yes
+    #     include_management_tools: yes
+
+    - name: Install IIS Web-Server with Specific Features
+      win_feature:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ IIS_Features }}"
+
+    # - name: Reboot Windows Server
+    #   win_reboot:
+
+    - name: Get Hostname
+      win_shell: hostname
+      register: result
+
+    - name: Print Hostname
+      debug: 
+        msg: '{{result.stdout_lines[0]}}' 
