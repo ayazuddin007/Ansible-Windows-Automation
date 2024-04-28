@@ -17,7 +17,7 @@
     #     - all
     
     - name: Get host name
-      win_shell: hostname.
+      win_shell: hostname
       register: result
 
     - name: Show result content only
