@@ -249,3 +249,7 @@ Commands
 # ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags 4x
 # ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags 3x,reboot
 # ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags 4x,reboot
+
+
+https://docs.ansible.com/ansible/latest/collections/ansible/windows/win_user_right_module.html
+https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/user-rights-assignment

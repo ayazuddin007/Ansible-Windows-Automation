@@ -12,8 +12,6 @@
         state: present
         groups:
             - Users
-        update_password: on_create
-        password_expired: true
       loop: "{{ AWA_Users }}"
       tags:
         - all
