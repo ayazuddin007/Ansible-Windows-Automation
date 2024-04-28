@@ -16,10 +16,26 @@
       tags:
         - all
 
+    - name: Allow log on through Remote Desktop Services
+      windows.win_user_right:
+        name: SeRemoteInteractiveLogonRight
+        users: "{{ item }}"
+        action: set
+      loop: "{{ AWA_User }}"
+      tags:
+        - all
+
     - name: Install .NET Framework 3.5
       win_shell: Install-WindowsFeature NET-Framework-Core
       tags:
         - "3x"
+        - all
+
+    - name: Install Chocolatey 
+      win_chocolatey:
+          name: chocolatey
+          state: latest
+      tags:
         - all
 
     # .Net Framework 4.8 for Windows Server 2022
@@ -33,22 +49,22 @@
         - "4x"
         - all
 
-    - name: Install IIS Web-Server with sub features and management tools
-      win_feature:
-        name: Web-Server
-        state: present
-        include_sub_features: yes
-        include_management_tools: yes
-      tags:
-        - all
-
-    # - name: Install IIS Web-Server with Specific Features
+    # - name: Install IIS Web-Server with sub features and management tools
     #   win_feature:
-    #     name: "{{ item }}"
+    #     name: Web-Server
     #     state: present
-    #   loop: "{{ IIS_Features }}"  
+    #     include_sub_features: yes
+    #     include_management_tools: yes
     #   tags:
     #     - all
+
+    - name: Install IIS Web-Server with Specific Features
+      win_feature:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ IIS_Features }}"  
+      tags:
+        - all
 
     - name: Reboot Windows Server
       win_reboot:
