@@ -14,7 +14,7 @@
             - Users
       loop: "{{ AWA_Users }}"
     
-    - name: Get Wundows Hostname
+    - name: Get Windows Hostname
       win_shell: hostname
       register: result
 
@@ -26,11 +26,6 @@
         state: present
       loop: "{{ AWA_Users }}"
        
-    - name: Install Chocolatey 
-      win_chocolatey:
-          name: chocolatey
-          state: latest
-
     - name: Install .NET Framework 3.5
       win_shell: Install-WindowsFeature NET-Framework-Core
       tags:
