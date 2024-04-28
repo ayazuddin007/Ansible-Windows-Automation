@@ -16,16 +16,19 @@
     #   tags:
     #     - all
     
-    - name: Get system name
+    - name: Get host name
       win_shell: hostname
       register: result
 
-    - debug:
-        msg: "{{ result }}"
-
     - name: Show result content only
       debug:
-        msg: "{{ result.stdout_lines[0].msg }}"
+        msg: "{{ result.stdout_lines[0] }}"
+      register: system_name
+
+    - debug:
+        msg: "{{ ansible_hostname }}"
+       
+
 
     # - name: Allow log on through Remote Desktop Services
     #   win_user_right:
