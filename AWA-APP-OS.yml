@@ -17,7 +17,7 @@
         - all
 
     - name: Allow log on through Remote Desktop Services
-      windows.win_user_right:
+      win_user_right:
         name: SeRemoteInteractiveLogonRight
         users: "{{ item }}"
         action: set
