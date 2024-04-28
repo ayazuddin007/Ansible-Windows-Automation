@@ -22,25 +22,23 @@
       tags:
         - all
 
-    - name: Show Hostname
-      debug:
-        msg: '{{ result.stdout_lines[0] }}\{{ item }} | replace("\\","\")'
-      loop: "{{ AWA_Users }}"
-      tags:
-        - all
-
-    # - name: Add User to Remote Desktop Users group
-    #   win_group_membership:
-    #     name: Remote Desktop Users
-    #     members:
-    #       - "{{ result.stdout_lines[0] }}\\{{ item }}"
-    #     state: present
-    #     loop: "{{ AWA_Users }}"
+    # - name: Show Hostname
+    #   debug:
+    #     msg: {{ result.stdout_lines[0] }}" +"\"+ '{{ item }}'
+    #   loop: "{{ AWA_Users }}"
     #   tags:
     #     - all
+
+    - name: Add User to Remote Desktop Users group
+      win_group_membership:
+        name: Remote Desktop Users
+        members:
+          - '{{ result.stdout_lines[0] }}{{ item }}'
+        state: present
+        loop: "{{ AWA_Users }}"
+      tags:
+        - all
        
-
-
     # - name: Allow log on through Remote Desktop Services
     #   win_user_right:
     #     name: SeDenyRemoteInteractiveLogonRight
