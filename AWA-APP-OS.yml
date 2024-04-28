@@ -22,7 +22,7 @@
       
     - name: Print system name
       debug: 
-       msg: "{{ mysystem }}"
+       msg: "{{ mysystem.stdout }}"
 
     # - name: Allow log on through Remote Desktop Services
     #   win_user_right:
