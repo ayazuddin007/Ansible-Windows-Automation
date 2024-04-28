@@ -33,7 +33,8 @@
       win_group_membership:
         name: Remote Desktop Users
         members:
-          - '{{result.stdout_lines[0]}}\{{ item }}'
+          #- '{{result.stdout_lines[0]}}\{{ item }}'
+          - '{{ansible_hostname}}\{{ item }}'
         state: present
       loop: "{{ AWA_Users }}"
       tags:
