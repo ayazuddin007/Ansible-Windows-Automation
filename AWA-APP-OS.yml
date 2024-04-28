@@ -5,34 +5,39 @@
     - "vars/common.vars"
   tasks:
 
-    - name: Create User 
-      win_user:
-        name: "{{ item }}"
-        password: "{{ AWA_Password }}"
-        state: present
-        groups:
-            - Users
-      loop: "{{ AWA_Users }}"
-      tags:
-        - all
+    # - name: Create User 
+    #   win_user:
+    #     name: "{{ item }}"
+    #     password: "{{ AWA_Password }}"
+    #     state: present
+    #     groups:
+    #         - Users
+    #   loop: "{{ AWA_Users }}"
+    #   tags:
+    #     - all
     
     - name: Get Hostname
       win_shell: hostname
       register: result
+      tags:
+        - all
 
     - name: Show Hostname
       debug:
-        msg: "{{ result.stdout_lines[0] }}"
-
-    - name: Add User to Remote Desktop Users group
-      win_group_membership:
-        name: Remote Desktop Users
-        members:
-          - '{{ result.stdout_lines[0] }}\{{ item }}'
-        state: present
-        loop: "{{ AWA_Users }}"
+        msg: "{{ result.stdout_lines[0] }}\\{{ item }}"
+      loop: "{{ AWA_Users }}"
       tags:
         - all
+
+    # - name: Add User to Remote Desktop Users group
+    #   win_group_membership:
+    #     name: Remote Desktop Users
+    #     members:
+    #       - "{{ result.stdout_lines[0] }}\\{{ item }}"
+    #     state: present
+    #     loop: "{{ AWA_Users }}"
+    #   tags:
+    #     - all
        
 
 
