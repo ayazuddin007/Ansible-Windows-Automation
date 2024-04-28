@@ -55,8 +55,8 @@
         Get-ADDefaultDomainPasswordPolicy 
         gpupdate /force
 
-    # # - name: Reboot Windows Server
-    # #   win_reboot:
+    - name: Reboot Windows Server
+      win_reboot:
 
     # # - name: Get Hostname
     # #   win_shell: hostname
