@@ -25,7 +25,7 @@
 
     - name: Show result content only
       debug:
-        msg: "{{ result.stdout_lines[0] }}"
+        msg: "{{ result.stdout_lines[0].msg }}"
 
     # - name: Allow log on through Remote Desktop Services
     #   win_user_right:
