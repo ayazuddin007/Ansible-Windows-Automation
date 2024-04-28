@@ -11,15 +11,15 @@
         Set-ADDefaultDomainPasswordPolicy -ComplexityEnabled $false -ReversibleEncryptionEnabled $false
         gpupdate /force
 
-    - name: Create Windows User 
-      win_user:
-        name: "{{ item }}"
-        password: "{{ AWA_Password }}"
-        state: present
-        groups:
-            - Users
-            - Remote Desktop Users
-      loop: "{{ AWA_Users }}"
+    # # - name: Create Windows User 
+    # #   win_user:
+    # #     name: "{{ item }}"
+    # #     password: "{{ AWA_Password }}"
+    # #     state: present
+    # #     groups:
+    # #         - Users
+    # #         - Remote Desktop Users
+    # #   loop: "{{ AWA_Users }}"
     
     # # - name: Install .NET Framework 3.5
     # #   win_shell: Install-WindowsFeature NET-Framework-Core
