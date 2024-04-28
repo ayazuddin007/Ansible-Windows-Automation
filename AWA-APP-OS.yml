@@ -16,19 +16,19 @@
       tags:
         - all
     
-    # - name: Get host name
-    #   win_shell: hostname
-    #   register: result
+    - name: Get Hostname
+      win_shell: hostname
+      register: result
 
-    # - name: Show result content only
-    #   debug:
-    #     msg: "{{ result.stdout_lines[0] }}"
+    - name: Show Hostname
+      debug:
+        msg: "{{ result.stdout_lines[0] }}"
 
     - name: Add User to Remote Desktop Users group
       win_group_membership:
         name: Remote Desktop Users
         members:
-          - '{{ansible_hostname}}\{{ item }}'
+          - '{{ result.stdout_lines[0] }}\{{ item }}'
         state: present
         loop: "{{ AWA_Users }}"
       tags:
