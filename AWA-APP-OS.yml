@@ -16,7 +16,7 @@
       tags:
         - all
 
-    - name: Print Hostname
+    - name: Show hostname
       win_powershell:
         script: |
           Write-Output "Hello World!"
