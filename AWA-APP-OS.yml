@@ -5,13 +5,9 @@
     - "vars/common.vars"
   tasks:
 
-    # - name: Disable Windows Password Complexity
-    #   win_shell: |
-    #     Import-Module ActiveDirectory 
-    #     Get-ADDefaultDomainPasswordPolicy 
-    #     Set-ADDefaultDomainPasswordPolicy -ComplexityEnabled $false
-    #     Get-ADDefaultDomainPasswordPolicy 
-    #     gpupdate /force
+    
+
+    
 
     # # - name: Create Windows User 
     # #   win_user:
@@ -23,33 +19,41 @@
     # #         - Remote Desktop Users
     # #   loop: "{{ AWA_Users }}"
     
-    # # - name: Install .NET Framework 3.5
-    # #   win_shell: Install-WindowsFeature NET-Framework-Core
-    # #   tags:
-    # #     - "3x"
+    - name: Install .NET Framework 3.5
+      win_shell: Install-WindowsFeature NET-Framework-Core
+      tags:
+        - "3x"
 
     # .Net Framework 4.8 for Windows Server 2022
     # .Net Framework 4.7 for Windows Server 2019
     # .Net Framework 4.5 for Windows Server 2016 
-    # # - name: Install .NET Framework 4.8/4.7/4.5
-    # #   win_chocolatey:
-    # #     name: "{{ Net_Framework }}"
-    # #     state: present
-    # #   tags:
-    # #     - "4x"
-
-    - name: Install IIS Web-Server with sub features and management tools
-      win_feature:
-        name: Web-Server
+    - name: Install .NET Framework 4.8/4.7/4.5
+      win_chocolatey:
+        name: "{{ Net_Framework }}"
         state: present
-        include_sub_features: yes
-        include_management_tools: yes
+      tags:
+        - "4x"
 
-    # # - name: Install IIS Web-Server with Specific Features
-    # #   win_feature:
-    # #     name: "{{ item }}"
-    # #     state: present
-    # #   loop: "{{ IIS_Features }}"
+    # - name: Install IIS Server All
+    #   win_feature:
+    #     name: Web-Server
+    #     state: present
+    #     include_sub_features: yes
+    #     include_management_tools: yes
+
+    - name: Install Specific Windows Feature
+      win_feature:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ Windows_Features }}"
+
+    - name: Disable Windows Password Complexity
+      win_shell: |
+        Import-Module ActiveDirectory 
+        Get-ADDefaultDomainPasswordPolicy 
+        Set-ADDefaultDomainPasswordPolicy -ComplexityEnabled $false
+        Get-ADDefaultDomainPasswordPolicy 
+        gpupdate /force
 
     # # - name: Reboot Windows Server
     # #   win_reboot:
