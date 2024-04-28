@@ -17,13 +17,12 @@
     #     - all
     
     - name: Get host name
-      win_shell: hostname.stdout_lines[0]
+      win_shell: hostname.
       register: result
 
     - name: Show result content only
       debug:
-       # msg: "{{ result.stdout_lines[0] }}"
-        msg: "{{ result }}"
+        msg: "{{ result.stdout_lines[0] }}"
        
 
 
