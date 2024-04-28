@@ -21,7 +21,7 @@
       tags:
         - "4x"
 
-    # - name: Install IIS Server All
+    # - name: Install IIS Server with all feaures
     #   win_feature:
     #     name: Web-Server
     #     state: present
@@ -34,7 +34,6 @@
         state: present
       loop: "{{ Windows_Features }}"
 
-
     - name: Create Windows User 
       win_user:
         name: "{{ item }}"
@@ -45,24 +44,13 @@
             - Remote Desktop Users
       loop: "{{ AWA_Users }}"
 
-    # - name: Disable Windows Password Complexity
-    #   win_shell: |
-    #     Import-Module ActiveDirectory 
-    #     Get-ADDefaultDomainPasswordPolicy 
-    #     Set-ADDefaultDomainPasswordPolicy -ComplexityEnabled $false
-    #     Get-ADDefaultDomainPasswordPolicy 
-    #     gpupdate /force
+    # - name: Get Hostname
+    #   win_shell: hostname
+    #   register: result
+
+    # - name: Print Hostname
+    #   debug: 
+    #     msg: '{{result.stdout_lines[0]}}' 
 
     # - name: Reboot Windows Server
     #   win_reboot:
-
-    # # - name: Get Hostname
-    # #   win_shell: hostname
-    # #   register: result
-
-    # # - name: Print Hostname
-    # #   debug: 
-    # #     msg: '{{result.stdout_lines[0]}}' 
-
-    # # - name: Reboot Windows Server
-    # #   win_reboot:
