@@ -12,23 +12,24 @@
         state: present
         groups:
             - Users
+            - Remote Desktop Users
       loop: "{{ AWA_Users }}"
     
-    - name: Get Windows Hostname
-      win_shell: hostname
-      register: result
+    # - name: Get Windows Hostname
+    #   win_shell: hostname
+    #   register: result
 
-    - name: Print Windows Hostname
-      debug: 
-        msg: '{{result.stdout_lines[0]}}' 
+    # - name: Print Windows Hostname
+    #   debug: 
+    #     msg: '{{result.stdout_lines[0]}}' 
 
-    - name: Add User to Windows RDP group
-      win_group_membership:
-        name: Remote Desktop Users
-        members:
-          - '{{ item }}'
-        state: present
-      loop: "{{ AWA_Users }}"
+    # - name: Add User to Windows RDP group
+    #   win_group_membership:
+    #     name: Remote Desktop Users
+    #     members:
+    #       - '{{ item }}'
+    #     state: present
+    #   loop: "{{ AWA_Users }}"
 
     # - name: Add User to Windows RDP group
     #   win_group_membership:
