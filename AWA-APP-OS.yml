@@ -47,7 +47,8 @@
     # - name: Reboot Windows Server
     #   win_reboot:
 
-    - win_shell: hostname
+    - name: Get Hostname
+      win_shell: hostname
       register: result
 
     - name: Print Hostname
