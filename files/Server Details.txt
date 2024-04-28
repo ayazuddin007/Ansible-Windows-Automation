@@ -244,7 +244,8 @@ https://amitgupt.wordpress.com/2018/08/14/installing-iis-and-management-features
 Commands
 ==========
 # ansible -i env/develop/inventory all -m win_ping
-# ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags all 
+# ansible-playbook AWA-APP-OS.yml -i env/develop/inventory
+# ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags all
 # ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags 3x
 # ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags 4x
 # ansible-playbook AWA-APP-OS.yml -i env/develop/inventory --tags 3x,reboot
@@ -264,4 +265,10 @@ Username: <System Name>\<Local UserName>
 e.g. 
     EC2AMAZ-D7BN68F\test
     EC2AMAZ-D7BN68F\Smith001
+          or
+          <Local UserName>
+e.g. 
+    test
+    Smith001
+
 Password: <Password>
