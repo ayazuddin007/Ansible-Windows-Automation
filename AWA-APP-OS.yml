@@ -5,73 +5,46 @@
     - "vars/common.vars"
   tasks:
 
-    # - name: Create User 
-    #   win_user:
-    #     name: "{{ item }}"
-    #     password: "{{ AWA_Password }}"
-    #     state: present
-    #     groups:
-    #         - Users
-    #   loop: "{{ AWA_Users }}"
-    #   tags:
-    #     - all
+    - name: Create Windows User 
+      win_user:
+        name: "{{ item }}"
+        password: "{{ AWA_Password }}"
+        state: present
+        groups:
+            - Users
+      loop: "{{ AWA_Users }}"
     
-    - name: Get Hostname
+    - name: Get Wundows Hostname
       win_shell: hostname
       register: result
-      tags:
-        - all
 
-    # - name: Show Hostname
-    #   debug:
-    #     msg: {{ result.stdout_lines[0] }}" +"\"+ '{{ item }}'
-    #   loop: "{{ AWA_Users }}"
-    #   tags:
-    #     - all
-
-    - name: Add User to Remote Desktop Users group
+    - name: Add User to Windows Remote Desktop Users group
       win_group_membership:
         name: Remote Desktop Users
         members:
-          #- '{{result.stdout_lines[0]}}\{{ item }}'
-          - '{{ansible_hostname}}\{{ item }}'
+          - '{{result.stdout_lines[0]}}\{{ item }}'
         state: present
       loop: "{{ AWA_Users }}"
-      tags:
-        - all
        
-    # - name: Allow log on through Remote Desktop Services
-    #   win_user_right:
-    #     name: SeDenyRemoteInteractiveLogonRight
-    #     users: "{{ item }}"
-    #     action: set
-    #   loop: "{{ AWA_Users }}"
-    #   tags:
-    #     - all
+    - name: Install Chocolatey 
+      win_chocolatey:
+          name: chocolatey
+          state: latest
 
-    # - name: Install Chocolatey 
-    #   win_chocolatey:
-    #       name: chocolatey
-    #       state: latest
-    #   tags:
-    #     - all
-
-    # - name: Install .NET Framework 3.5
-    #   win_shell: Install-WindowsFeature NET-Framework-Core
-    #   tags:
-    #     - "3x"
-    #     - all
+    - name: Install .NET Framework 3.5
+      win_shell: Install-WindowsFeature NET-Framework-Core
+      tags:
+        - "3x"
 
     # .Net Framework 4.8 for Windows Server 2022
     # .Net Framework 4.7 for Windows Server 2019
     # .Net Framework 4.5 for Windows Server 2016 
-    # - name: Install .NET Framework 4.8/4.7/4.5
-    #   win_chocolatey:
-    #     name: "{{ Net_Framework }}"
-    #     state: present
-    #   tags:
-    #     - "4x"
-    #     - all
+    - name: Install .NET Framework 4.8/4.7/4.5
+      win_chocolatey:
+        name: "{{ Net_Framework }}"
+        state: present
+      tags:
+        - "4x"
 
     # - name: Install IIS Web-Server with sub features and management tools
     #   win_feature:
@@ -79,18 +52,12 @@
     #     state: present
     #     include_sub_features: yes
     #     include_management_tools: yes
-    #   tags:
-    #     - all
 
-    # - name: Install IIS Web-Server with Specific Features
-    #   win_feature:
-    #     name: "{{ item }}"
-    #     state: present
-    #   loop: "{{ IIS_Features }}"  
-    #   tags:
-    #     - all
+    - name: Install IIS Web-Server with Specific Features
+      win_feature:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ IIS_Features }}"
 
     # - name: Reboot Windows Server
     #   win_reboot:
-    #   tags:
-    #     - all
