@@ -18,11 +18,7 @@
     
     - name: Get system name
       win_shell: hostname
-      register: result
-
-    - name: Show registered variable
-      debug:
-        var: result
+      register: result.stdout_lines
 
     - name: Show result content only
       debug:
